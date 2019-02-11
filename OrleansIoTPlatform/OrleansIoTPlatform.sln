@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrainInterfaces", "GrainInt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grains", "Grains\Grains.csproj", "{8115B873-3171-4653-91CC-DF55977874AC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2F6A398C-E763-4807-AF4D-18EC8FF54FE8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +38,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{76FB6308-A43B-427D-9602-1238E74E35D5} = {2F6A398C-E763-4807-AF4D-18EC8FF54FE8}
+		{384AFB57-ADE0-41B9-B843-5DF3C374559F} = {2F6A398C-E763-4807-AF4D-18EC8FF54FE8}
+		{F97ADE36-BBD5-440D-BE5B-899C6C101D00} = {2F6A398C-E763-4807-AF4D-18EC8FF54FE8}
+		{8115B873-3171-4653-91CC-DF55977874AC} = {2F6A398C-E763-4807-AF4D-18EC8FF54FE8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BA512946-BE8F-4841-9F45-B75FB1D873CF}

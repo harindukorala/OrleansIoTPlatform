@@ -95,6 +95,13 @@ namespace Client
                 }
             }
 
+            Console.WriteLine("Input Data Line by Line\n");
+            Console.WriteLine(myData.ToString());
+            foreach (var t in myData.ToArray())
+            {
+                Console.WriteLine("\n{0}\n", t);
+            }
+
             foreach (var w in myData.ToArray())
             {
                 Task subProcess = ProcessSubResultAsync(client, reducerActor, w);
