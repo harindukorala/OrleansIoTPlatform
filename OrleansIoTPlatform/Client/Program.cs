@@ -108,7 +108,7 @@ namespace Client
             List<string> myData = new List<string>();
 
             //var fileName = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"Resources\TestData.csv");
-            var fileName = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"Resources\Data.csv");
+            var fileName = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), @"Resources\AccTestData.csv");
 
             using (StreamReader fileContent = new StreamReader(fileName))
             {
