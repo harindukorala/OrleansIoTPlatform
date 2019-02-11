@@ -4,7 +4,7 @@ namespace OrleansIoTPlatform.GrainInterfaces
 {
     public interface IReducer : Orleans.IGrainWithIntegerKey
     {
-        Task ReduceAccelo(AccelerationDataPerSec subResults);
-        Task<AccelerationDataPerSec> GetResultsAccelo();
+        Task ReduceAccelerationData(AccelerationDataPerSec subResults);
+        Task<AccelerationDataPerSec> GetResults();
     }
 }
