@@ -1,9 +1,13 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
+using Orleans.Runtime;
+using Orleans.Statistics;
 using OrleansIoTPlatform.Grains;
 using System;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Silo
@@ -43,26 +47,25 @@ namespace Silo
             var builder = new SiloHostBuilder()
                 //.UseDevelopmentClustering(primarySiloEndpoint)
 
-                //.UseLocalhostClustering()
-                //.UseDashboard(options => { })
+                .UseLocalhostClustering()
+                .UseDashboard(options => { })
                 .Configure<ClusterOptions>(options =>
                 {
                     options.ClusterId = "dev"; // Unique ID for Orleans CLuster . All clients and Silos that use this ID will be able to talk directly to eachother 
-                    options.ServiceId = "HelloWorldApp";
+                    options.ServiceId = "OrleansIoTApp";
                 })
-                //.UseAdoNetClustering(options => { options.Invariant = invariant; options.ConnectionString = connectionString; })
                 //.UseAzureStorageClustering(options => options.ConnectionString = connectionString)
-                //.Configure<EndpointOptions>(options => options.AdvertisedIPAddress = IPAddress.Loopback)
-                .ConfigureEndpoints(siloPort: 11111, gatewayPort: 30000)
+                .Configure<EndpointOptions>(options => options.AdvertisedIPAddress = IPAddress.Loopback)
+                //.ConfigureEndpoints(siloPort: 11111, gatewayPort: 30000)
                 .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(Mapper).Assembly).WithReferences())
                 .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(Reducer).Assembly).WithReferences())
                 .ConfigureLogging(logging => logging.AddConsole())
-                //.UsePerfCounterEnvironmentStatistics()
-                                    //.ConfigureServices(services =>
-                                    //{
-                                    //    // Workaround for https://github.com/dotnet/orleans/issues/4129
-                                    //    services.AddSingleton(cp => cp.GetRequiredService<IHostEnvironmentStatistics>() as ILifecycleParticipant<ISiloLifecycle>);
-                                    //})
+                .UsePerfCounterEnvironmentStatistics()
+                .ConfigureServices(services =>
+                {
+                    // Workaround for https://github.com/dotnet/orleans/issues/4129
+                    services.AddSingleton(cp => cp.GetRequiredService<IHostEnvironmentStatistics>() as ILifecycleParticipant<ISiloLifecycle>);
+                })
                 .AddMemoryGrainStorageAsDefault();
             //.AddAzureTableGrainStorageAsDefault(options => { options.ConnectionString = connectionString; options.TableName = "OrleansTable"; });
 
