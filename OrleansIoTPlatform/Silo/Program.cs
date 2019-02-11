@@ -1,12 +1,74 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using Orleans;
+using Orleans.Configuration;
+using Orleans.Hosting;
+using OrleansIoTPlatform.Grains;
+using System;
+using System.Threading.Tasks;
 
 namespace Silo
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static int Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            return RunMainAsync().Result;
+        }
+
+        private static async Task<int> RunMainAsync()
+        {
+            try
+            {
+                var host = await StartSilo();
+                Console.WriteLine("Press Enter to terminate...");
+                Console.ReadLine();
+
+                await host.StopAsync();
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return 1;
+            }
+        }
+
+        private static async Task<ISiloHost> StartSilo()
+        {
+            // define the cluster configuration
+            //var add = "10.0.75.1";
+            //IPAddress address = IPAddress.Parse(add);
+           // var primarySiloEndpoint = new IPEndPoint(address, 11111);
+            var builder = new SiloHostBuilder()
+                //.UseDevelopmentClustering(primarySiloEndpoint)
+
+                //.UseLocalhostClustering()
+                //.UseDashboard(options => { })
+                .Configure<ClusterOptions>(options =>
+                {
+                    options.ClusterId = "dev"; // Unique ID for Orleans CLuster . All clients and Silos that use this ID will be able to talk directly to eachother 
+                    options.ServiceId = "HelloWorldApp";
+                })
+                //.UseAdoNetClustering(options => { options.Invariant = invariant; options.ConnectionString = connectionString; })
+                //.UseAzureStorageClustering(options => options.ConnectionString = connectionString)
+                //.Configure<EndpointOptions>(options => options.AdvertisedIPAddress = IPAddress.Loopback)
+                .ConfigureEndpoints(siloPort: 11111, gatewayPort: 30000)
+                .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(Mapper).Assembly).WithReferences())
+                .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(Reducer).Assembly).WithReferences())
+                .ConfigureLogging(logging => logging.AddConsole())
+                //.UsePerfCounterEnvironmentStatistics()
+                                    //.ConfigureServices(services =>
+                                    //{
+                                    //    // Workaround for https://github.com/dotnet/orleans/issues/4129
+                                    //    services.AddSingleton(cp => cp.GetRequiredService<IHostEnvironmentStatistics>() as ILifecycleParticipant<ISiloLifecycle>);
+                                    //})
+                .AddMemoryGrainStorageAsDefault();
+            //.AddAzureTableGrainStorageAsDefault(options => { options.ConnectionString = connectionString; options.TableName = "OrleansTable"; });
+
+            var host = builder.Build();
+            await host.StartAsync();
+            return host;
         }
     }
 }
