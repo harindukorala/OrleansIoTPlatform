@@ -7,15 +7,17 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Orleans.CounterControl" Version="2.2.3" />
-    <PackageReference Include="Microsoft.Orleans.OrleansTelemetryConsumers.Counters" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Orleans.Server" Version="2.2.3" />
-    <PackageReference Include="OrleansDashboard" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Orleans.CounterControl" Version="2.2.4" />
+    <PackageReference Include="Microsoft.Orleans.OrleansTelemetryConsumers.Counters" Version="2.2.4" />
+    <PackageReference Include="Microsoft.Orleans.Server" Version="2.2.4" />
+    <PackageReference Include="OrleansDashboard" Version="2.2.5" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\GrainInterfaces\GrainInterfaces.csproj" />
     <ProjectReference Include="..\Grains\Grains.csproj" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
+    <ProjectReference Include="..\SiloCore\SiloCore.csproj" />
   </ItemGroup>
 
 </Project>

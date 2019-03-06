@@ -9,6 +9,7 @@ using OrleansIoTPlatform.Grains;
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using SwinIotFramework;
 
 namespace Silo
 {
@@ -54,11 +55,14 @@ namespace Silo
                     options.ClusterId = "dev"; // Unique ID for Orleans CLuster . All clients and Silos that use this ID will be able to talk directly to eachother 
                     options.ServiceId = "OrleansIoTApp";
                 })
+              
                 //.UseAzureStorageClustering(options => options.ConnectionString = connectionString)
                 .Configure<EndpointOptions>(options => options.AdvertisedIPAddress = IPAddress.Loopback)
+                .AddPlacementDirector<PlacedPlacement, PlacedPlacementDirector>()
                 //.ConfigureEndpoints(siloPort: 11111, gatewayPort: 30000)
                 .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(Mapper).Assembly).WithReferences())
                 .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(Reducer).Assembly).WithReferences())
+                .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(PlacementHolder).Assembly).WithReferences())
                 .ConfigureLogging(logging => logging.AddConsole())
                 .UsePerfCounterEnvironmentStatistics()
                 .ConfigureServices(services =>

@@ -9,6 +9,8 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 
+using SwinIotFramework;
+
 namespace Client
 {
     public class Program
@@ -80,6 +82,9 @@ namespace Client
 
         private static async Task DoClientWork(IClusterClient client)
         {
+            var testPlacementHolder = client.GetGrain<SwinIotFramework.IPlacementHolder>(Guid.NewGuid());
+            SiloAddress test = await testPlacementHolder.GetSiloAddress(0);
+
             var reducerActor = client.GetGrain<IReducer>(0);
             List<Task> forks = new List<Task>();
             List<string> myData = new List<string>();

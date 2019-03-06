@@ -1,8 +1,11 @@
 ﻿using OrleansIoTPlatform.GrainInterfaces;
 using System.Threading.Tasks;
 
+using SwinIotFramework;
+
 namespace OrleansIoTPlatform.Grains
 {
+    [PlacedPlacement]
     public class Reducer : Orleans.Grain<AccelerationDataPerSec>, IReducer
     {
         AccelerationDataPerSec newState = new AccelerationDataPerSec();
