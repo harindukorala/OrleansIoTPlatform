@@ -10,6 +10,8 @@ namespace SwinIotFramework
 {
     public class PlacementHolder : Grain, IPlacementHolder
     {
+        private Dictionary<int, SiloAddress> addresses = new Dictionary<int, SiloAddress>();
+
         public Task<SiloAddress> GetSiloAddress(int interface_id)
         {
             SiloAddress returning = null;
@@ -19,15 +21,16 @@ namespace SwinIotFramework
             }
             else
             {
-                return null;
+                return Task.FromResult(returning);
             }
         }
 
-        public void SetSiloAddress(int interface_id, SiloAddress address)
+        public Task SetSiloAddress(int interface_id, SiloAddress address)
         {
             addresses[interface_id] = address;
+            return Task.CompletedTask;
         }
 
-        private Dictionary<int, SiloAddress> addresses = new Dictionary<int, SiloAddress>();
+        
     }
 }

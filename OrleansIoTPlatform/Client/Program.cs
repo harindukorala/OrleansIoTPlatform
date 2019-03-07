@@ -82,8 +82,10 @@ namespace Client
 
         private static async Task DoClientWork(IClusterClient client)
         {
-            var testPlacementHolder = client.GetGrain<SwinIotFramework.IPlacementHolder>(Guid.NewGuid());
+            var testPlacementHolder = client.GetGrain<IPlacementHolder>(Guid.NewGuid());
             SiloAddress test = await testPlacementHolder.GetSiloAddress(0);
+
+            Console.WriteLine("Silo Address : ", test);
 
             var reducerActor = client.GetGrain<IReducer>(0);
             List<Task> forks = new List<Task>();
@@ -123,7 +125,7 @@ namespace Client
         {
             var mapper = client.GetGrain<IMapper>(Guid.NewGuid());
             AccelerationDataPerSec subResult = await mapper.MapAccelerationData(partialData);
-            Console.WriteLine("\n\n{0}\n\n", subResult.ToString());
+            Console.WriteLine("\n\n{0}\n\n", subResult);
             await proxy.ReduceAccelerationData(subResult);
         }
     }
